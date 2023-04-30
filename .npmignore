@@ -1,0 +1,16 @@
+.vscode
+public
+src
+.editorconfig
+.eslintrc.cjs
+.gitignore
+.gitlab-ci.yml
+.npmignore
+env.d.ts
+index.html
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+tsconfig.vitest.json
+vite.config.ts
+vitest.config.ts

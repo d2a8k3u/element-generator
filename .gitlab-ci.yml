@@ -1,0 +1,47 @@
+image: node:16.18.1-alpine3.15
+
+stages:
+  - test
+  - deploy
+
+.frontend_publish_authorization: &frontend_publish_authorization
+  - set -e
+  - |
+    echo "
+      @d283k:registry=https://${CI_SERVER_HOST}/api/v4/packages/npm\n
+      @d283k:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/\n
+      //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+      //${CI_SERVER_HOST}/api/v4/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    " > .npmrc
+
+test:coverage:
+  stage: test
+  cache:
+    paths:
+      - node_modules/
+  before_script:
+    - yarn install --no-progress --prefer-offline --frozen-lockfile
+  script:
+    - time yarn coverage
+  artifacts:
+    when: always
+    paths:
+      - coverage
+    expire_in: 7 days
+  only:
+    refs:
+      - merge_requests
+      - master
+  coverage: '/All files.* (\d+.?\d*)/'
+
+deploy:
+  stage: deploy
+  before_script:
+    - *frontend_publish_authorization
+    - yarn install --no-progress --prefer-offline --frozen-lockfile
+  script:
+    - yarn build
+    - npm publish
+  only:
+    refs:
+      - tags

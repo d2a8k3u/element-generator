@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import ElementGenerator from '@/components/ElementGenerator.vue';
+import ElementGenerator from '@/lib/views/ElementGenerator.vue';
 
 const title = ref('Element style generator');
 </script>
