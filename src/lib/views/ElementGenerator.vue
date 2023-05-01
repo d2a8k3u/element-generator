@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <h1>{{ title }}</h1>
+  <h1 class="text-3xl font-bold underline hover:no-underline">{{ title }}</h1>
 </template>
 
 <style scoped lang="scss">

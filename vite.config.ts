@@ -3,7 +3,10 @@ import { defineConfig } from 'vite';
 import * as path from 'path';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
+import libCss from 'vite-plugin-libcss';
 import typescript2 from 'rollup-plugin-typescript2';
+
+const libraryName = 'element-generator-library';
 
 export default defineConfig({
   plugins: [
@@ -11,6 +14,7 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
     }),
+    libCss(),
     typescript2({
       check: false,
       include: ['src/lib/**/*.vue'],
@@ -23,10 +27,10 @@ export default defineConfig({
   build: {
     cssCodeSplit: true,
     lib: {
-      entry: 'src/lib/element-generator-library.ts',
-      name: 'element-generator-library',
+      entry: `src/lib/${libraryName}.ts`,
+      name: libraryName,
       formats: ['es', 'cjs', 'umd'],
-      fileName: (format) => `element-generator-library.${format}.js`,
+      fileName: (format) => `${libraryName}.${format}.js`,
     },
     rollupOptions: {
       input: {
@@ -34,13 +38,8 @@ export default defineConfig({
       },
       external: ['vue'],
       output: {
-        assetFileNames: (assetInfo) => {
-          if ('main.css' === assetInfo.name) {
-            return 'element-generator-library.css';
-          }
-
-          return assetInfo.name || 'element-generator-library.css';
-        },
+        assetFileNames: (assetInfo) =>
+          'main.css' === assetInfo.name ? `${libraryName}.css` : assetInfo.name || 'styles.css',
         exports: 'named',
         globals: {
           vue: 'Vue',
