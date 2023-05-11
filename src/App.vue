@@ -1,14 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import ElementGenerator from '@/lib/views/ElementGenerator.vue';
+import { computed } from 'vue';
+import { useElementStore } from './stores/element';
+import ElementForm from './components/ElementForm.vue';
+import ElementPreview from './components/ElementPreview.vue';
 
-const title = ref('Element style generator');
+interface Props {
+  title?: string;
+}
+
+withDefaults(defineProps<Props>(), {
+  title: 'Element generator',
+});
+
+const elementStore = useElementStore();
+
+const canShowResult = computed(() => elementStore.isSaved);
 </script>
 
 <template>
-  <main>
-    <ElementGenerator :title="title"></ElementGenerator>
-  </main>
+  <div class="container mx-auto py-10 px-5">
+    <h1 class="text-3xl underline text-center">
+      {{ title }}
+    </h1>
+
+    <ElementForm></ElementForm>
+
+    <ElementPreview v-if="canShowResult"></ElementPreview>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style scoped lang="scss"></style>
