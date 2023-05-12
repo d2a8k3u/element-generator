@@ -4,45 +4,48 @@ import * as path from 'path';
 import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 import libCss from 'vite-plugin-libcss';
-import typescript2 from 'rollup-plugin-typescript2';
-
-const libraryName = 'element-generator-library';
+import checker from 'vite-plugin-checker';
+import typescript from 'rollup-plugin-typescript2';
 
 export default defineConfig({
   plugins: [
     vue(),
     dts({
       insertTypesEntry: true,
+      tsConfigFilePath: path.resolve(__dirname, 'tsconfig.json'),
     }),
     libCss(),
-    typescript2({
-      check: false,
-      include: ['src/lib/**/*.vue'],
-      tsconfigDefaults: { compilerOptions: { declaration: true } },
-      tsconfig: 'tsconfig.json',
-      tsconfigOverride: { compilerOptions: { declaration: false } },
-      exclude: ['vite.config.ts'],
+    typescript({
+      tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+      tsconfigOverride: {
+        include: ['src/**/*.ts', 'src/**/*.vue'],
+        exclude: ['node_modules', 'dist'],
+      },
+    }),
+    checker({
+      typescript: true,
     }),
   ],
   build: {
     cssCodeSplit: true,
+    commonjsOptions: {
+      esmExternals: true,
+    },
     lib: {
-      entry: `src/lib/${libraryName}.ts`,
-      name: libraryName,
+      entry: 'src/main.ts',
+      name: 'ElementGenerator',
       formats: ['es', 'cjs', 'umd'],
-      fileName: (format) => `${libraryName}.${format}.js`,
+      fileName: (format) => `element-generator.${format}.js`,
     },
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'src/lib/main.ts'),
-      },
-      external: ['vue'],
+      external: ['vue', 'pinia'],
       output: {
         assetFileNames: (assetInfo) =>
-          'main.css' === assetInfo.name ? `${libraryName}.css` : assetInfo.name || 'styles.css',
+          'main.css' === assetInfo.name ? `element-generator.css` : assetInfo.name || 'styles.css',
         exports: 'named',
         globals: {
           vue: 'Vue',
+          pinia: 'Pinia',
         },
       },
     },

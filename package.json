@@ -1,6 +1,6 @@
 {
   "name": "@d283k/element-generator",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Element style generator",
   "repository": "https://gitlab.com/d283k/element-generator",
   "license": "ISC",
@@ -11,16 +11,16 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/element-generator-library.es.js",
-      "require": "./dist/element-generator-library.umd.js"
+      "import": "./dist/element-generator.es.js",
+      "require": "./dist/element-generator.umd.js"
     },
-    "./dist/element-generator-library.css": {
-      "import": "./dist/element-generator-library.css",
-      "require": "./dist/element-generator-library.css"
+    "./dist/element-generator.css": {
+      "import": "./dist/element-generator.css",
+      "require": "./dist/element-generator.css"
     }
   },
-  "main": "./dist/element-generator-library.umd.js",
-  "module": "./dist/element-generator-library.es.js",
+  "main": "./dist/element-generator.umd.js",
+  "module": "./dist/element-generator.es.js",
   "types": "./dist/main.d.ts",
   "files": [
     "dist"
@@ -36,8 +36,12 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "pinia": "^2.0.32",
-    "vue": "^3.2.47"
+    "validate-color": "^2.2.4",
+    "vee-validate": "^4.8.6",
+    "vue": "^3.3.1",
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@babel/types": "^7.21.5",
@@ -60,8 +64,9 @@
     "rollup-plugin-typescript2": "^0.34.1",
     "sass": "^1.62.1",
     "tailwindcss": "^3.3.2",
-    "typescript": "~4.8.4",
+    "typescript": "~4.9.5",
     "vite": "^4.1.4",
+    "vite-plugin-checker": "^0.6.0",
     "vite-plugin-dts": "^1.7.1",
     "vite-plugin-libcss": "^1.0.6",
     "vitest": "^0.29.1",
