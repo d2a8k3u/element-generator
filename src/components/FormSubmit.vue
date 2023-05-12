@@ -31,6 +31,13 @@ function handleSubmit() {
     emit('on-submit');
   }, 700);
 }
+
+defineExpose({
+  loading,
+  isDisabled,
+  isLoading,
+  handleSubmit,
+});
 </script>
 
 <template>
