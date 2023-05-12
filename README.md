@@ -10,14 +10,28 @@ yarn add @d283k/element-generator
 
 ## Package usage
 
+In main.{js,ts} file
+```javascript
+import { createApp } from 'vue'
+import App from './App.vue'
+import ElementGenerator from "@d283k/element-generator";
+
+const app = createApp(App)
+
+app.use(ElementGenerator)
+
+app.mount('#app')
+```
+
+Usage in a component
 ```vue
-<script setup lang="ts">
-import {ElementGenerator} from "@d283k/element-generator";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-   <element-generator></element-generator>
+   <element-generator title="Optional parameter"></element-generator>
 </template>
+
+<style scoped></style>
 ```
 
 ## Project Setup
